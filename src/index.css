@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+}
+
+/* Custom luxury scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #08090b;
+}
+::-webkit-scrollbar-thumb {
+  background: #372412;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c59d4c;
+}
+
+/* Glassmorphism helpers */
+.glass-panel {
+  background: rgba(15, 17, 23, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(197, 157, 76, 0.18);
+}
+
+.glass-panel-gold {
+  background: rgba(28, 22, 14, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(215, 184, 120, 0.35);
+  box-shadow: 0 10px 35px -5px rgba(197, 157, 76, 0.15);
+}
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, #fff7ea 0%, #f1e6cf 30%, #d7b878 70%, #ab8239 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gold-glow {
+  text-shadow: 0 0 25px rgba(215, 184, 120, 0.45);
+}
+
+.gold-border-glow {
+  box-shadow: 0 0 20px rgba(197, 157, 76, 0.2);
+}
