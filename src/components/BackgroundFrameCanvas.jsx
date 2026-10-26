@@ -85,7 +85,16 @@ export default function BackgroundFrameCanvas({ scrollProgress, activeSection, o
     targetFrameRef.current = target;
   }, [scrollProgress]);
 
-  // Canvas render with aspect-ratio cover
+  const samplerCanvasRef = useRef(null);
+
+  useEffect(() => {
+    const c = document.createElement('canvas');
+    c.width = 1;
+    c.height = 1;
+    samplerCanvasRef.current = c;
+  }, []);
+
+  // Canvas render with responsive mobile-aware aspect ratio
   const renderFrame = useCallback((frameIndex) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -111,20 +120,100 @@ export default function BackgroundFrameCanvas({ scrollProgress, activeSection, o
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
 
-    // Object-fit: cover math
-    const hRatio = width / img.naturalWidth;
-    const vRatio = height / img.naturalHeight;
-    const ratio = Math.max(hRatio, vRatio);
+    // Determine if viewport is mobile/portrait
+    const isPortrait = width < height || width < 768;
 
-    const shiftX = (width - img.naturalWidth * ratio) / 2;
-    const shiftY = (height - img.naturalHeight * ratio) / 2;
+    if (!isPortrait) {
+      // Desktop / Landscape: Standard High-Res Cinematic Cover
+      const hRatio = width / img.naturalWidth;
+      const vRatio = height / img.naturalHeight;
+      const ratio = Math.max(hRatio, vRatio);
 
-    ctx.clearRect(0, 0, width, height);
-    ctx.drawImage(
-      img,
-      0, 0, img.naturalWidth, img.naturalHeight,
-      shiftX, shiftY, img.naturalWidth * ratio, img.naturalHeight * ratio
-    );
+      const shiftX = (width - img.naturalWidth * ratio) / 2;
+      const shiftY = (height - img.naturalHeight * ratio) / 2;
+
+      ctx.clearRect(0, 0, width, height);
+      ctx.drawImage(
+        img,
+        0, 0, img.naturalWidth, img.naturalHeight,
+        shiftX, shiftY, img.naturalWidth * ratio, img.naturalHeight * ratio
+      );
+    } else {
+      // Mobile / Portrait Screen: Full Subject Visibility Mode
+      // In the 1280x720 video frames, the woman, perfume bottle in hand, spray mist,
+      // and pink shopping bag span horizontally across ~600px centered around X = 485.
+      // Scaling so that this ~600px subject fits mobile screen width ensures nothing is cropped.
+      const subjectWidth = 600;
+      const ratio = width / subjectWidth;
+      const scaledW = img.naturalWidth * ratio;
+      const scaledH = img.naturalHeight * ratio;
+
+      // Center horizontally on subject (focal point X = 485)
+      const focalX = 485 * ratio;
+      const shiftX = (width / 2) - focalX;
+
+      // Position vertically in the center of the mobile screen
+      const shiftY = (height - scaledH) / 2;
+
+      ctx.clearRect(0, 0, width, height);
+
+      // Sample backdrop color from top of current frame (X=485, Y=5)
+      let r = 138, g = 136, b = 139;
+      const isDarkScene = clampedIndex >= 59 && clampedIndex <= 105;
+      if (isDarkScene) {
+        r = 23; g = 23; b = 23;
+      }
+
+      if (samplerCanvasRef.current) {
+        try {
+          const sCtx = samplerCanvasRef.current.getContext('2d', { willReadFrequently: true });
+          sCtx.drawImage(img, 485, 5, 1, 1, 0, 0, 1, 1);
+          const pixel = sCtx.getImageData(0, 0, 1, 1).data;
+          if (pixel && pixel[3] > 0) {
+            r = pixel[0];
+            g = pixel[1];
+            b = pixel[2];
+          }
+        } catch {
+          // Fallback to scene defaults
+        }
+      }
+
+      // 1. Draw smooth vertical studio ambient gradient
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
+      const topCol = `rgb(${Math.round(r * 0.45)}, ${Math.round(g * 0.45)}, ${Math.round(b * 0.45)})`;
+      const midCol = `rgb(${Math.round(r * 0.30)}, ${Math.round(g * 0.30)}, ${Math.round(b * 0.30)})`;
+      const botCol = `rgb(${Math.round(r * 0.12)}, ${Math.round(g * 0.12)}, ${Math.round(b * 0.12)})`;
+
+      bgGrad.addColorStop(0, topCol);
+      bgGrad.addColorStop(0.5, midCol);
+      bgGrad.addColorStop(1, botCol);
+
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, width, height);
+
+      // 2. Draw the sharp frame with all parts of the woman visible
+      ctx.drawImage(
+        img,
+        0, 0, img.naturalWidth, img.naturalHeight,
+        shiftX, shiftY, scaledW, scaledH
+      );
+
+      // 3. Smooth vertical edge feathering so the frame top and bottom melt seamlessly
+      const topFade = Math.max(30, Math.round(50 * ratio));
+      const topGrad = ctx.createLinearGradient(0, shiftY, 0, shiftY + topFade);
+      topGrad.addColorStop(0, topCol);
+      topGrad.addColorStop(1, `rgba(${Math.round(r * 0.45)}, ${Math.round(g * 0.45)}, ${Math.round(b * 0.45)}, 0)`);
+      ctx.fillStyle = topGrad;
+      ctx.fillRect(0, shiftY - 1, width, topFade + 1);
+
+      const bottomFade = Math.max(45, Math.round(75 * ratio));
+      const bottomGrad = ctx.createLinearGradient(0, shiftY + scaledH - bottomFade, 0, shiftY + scaledH);
+      bottomGrad.addColorStop(0, `rgba(${Math.round(r * 0.30)}, ${Math.round(g * 0.30)}, ${Math.round(b * 0.30)}, 0)`);
+      bottomGrad.addColorStop(1, midCol);
+      ctx.fillStyle = bottomGrad;
+      ctx.fillRect(0, shiftY + scaledH - bottomFade, width, bottomFade + 2);
+    }
 
     ctx.restore();
   }, []);
@@ -266,7 +355,7 @@ export default function BackgroundFrameCanvas({ scrollProgress, activeSection, o
       </div>
 
       {/* Floating Modern Luxury Control Bar (Bottom Dock) */}
-      <div className="fixed bottom-6 right-6 z-40 flex items-center gap-2">
+      <div className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 z-40 flex items-center gap-2">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -341,7 +430,7 @@ export default function BackgroundFrameCanvas({ scrollProgress, activeSection, o
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            className="fixed bottom-20 right-6 left-6 md:left-auto md:w-96 z-40 glass-panel-gold p-4 rounded-2xl border border-gold-400/30 backdrop-blur-2xl"
+            className="fixed bottom-36 sm:bottom-20 right-4 left-4 sm:left-auto sm:right-6 md:w-96 z-40 glass-panel-gold p-4 rounded-2xl border border-gold-400/30 backdrop-blur-2xl"
           >
             <div className="flex items-center justify-between text-xs mb-2">
               <span className="text-gold-300 uppercase tracking-widest font-serif flex items-center gap-1.5 text-[11px]">

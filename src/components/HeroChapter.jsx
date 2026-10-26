@@ -76,7 +76,7 @@ export default function HeroChapter() {
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, delay: 0.3 }}
-          className="lg:col-span-5 flex flex-col justify-end"
+          className="hidden lg:flex lg:col-span-5 flex-col justify-end"
         >
           <div className="glass-panel p-6 rounded-2xl border border-white/10 backdrop-blur-xl max-w-md ml-auto">
             <div className="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
