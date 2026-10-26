@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Star, Sparkles, Filter, Check } from 'lucide-react';
+import { ShoppingBag, Star, Sparkles, Filter, Check, MessageCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { createWhatsAppOrderLink } from '../utils/whatsapp';
 
 export const SEEMARH_COLLECTION = [
   {
@@ -338,20 +339,38 @@ export default function CollectionGrid({ onAddToCart }) {
                   </div>
                 </div>
 
-                {/* Bottom Price & Add to Bag */}
+                {/* Bottom Price & Actions */}
                 <div className="pt-3.5 border-t border-white/10 flex items-center justify-between">
                   <div>
                     <span className="text-xl font-serif text-white font-medium">${product.price}</span>
-                    <span className="text-[9px] text-neutral-400 block font-mono">Official Box Included</span>
+                    <span className="text-[9px] text-neutral-400 block font-mono">Box Included</span>
                   </div>
 
-                  <button
-                    onClick={() => handleQuickAdd(product)}
-                    className="p-2.5 rounded-full bg-gold-500/10 hover:bg-gold-500 hover:text-black text-gold-300 border border-gold-400/30 transition-all duration-300 group/btn"
-                    title={`Add ${product.title} to Bag`}
-                  >
-                    <ShoppingBag className="w-4 h-4 transition-transform group-hover/btn:scale-110" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <a
+                      href={createWhatsAppOrderLink({
+                        title: product.title,
+                        subtitle: product.subtitle,
+                        size: product.subtitle.match(/\((.*?)\)/)?.[1] || "Full Flacon",
+                        price: product.price,
+                        image: product.image
+                      })}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2.5 rounded-full bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white border border-emerald-500/30 transition-all duration-300"
+                      title={`Order ${product.title} directly on WhatsApp`}
+                    >
+                      <MessageCircle className="w-4 h-4 fill-current" />
+                    </a>
+
+                    <button
+                      onClick={() => handleQuickAdd(product)}
+                      className="p-2.5 rounded-full bg-gold-500/10 hover:bg-gold-500 hover:text-black text-gold-300 border border-gold-400/30 transition-all duration-300 group/btn"
+                      title={`Add ${product.title} to Bag`}
+                    >
+                      <ShoppingBag className="w-4 h-4 transition-transform group-hover/btn:scale-110" />
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             ))}

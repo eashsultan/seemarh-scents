@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Maximize2, X, ChevronLeft, ChevronRight, ShoppingBag, Check } from 'lucide-react';
+import { Sparkles, Maximize2, X, ChevronLeft, ChevronRight, ShoppingBag, Check, MessageCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { createWhatsAppOrderLink } from '../utils/whatsapp';
 
 const GALLERY_ITEMS = [
   {
@@ -334,23 +335,41 @@ export default function GallerySection({ onAddToCart }) {
                   </div>
                 </div>
 
-                {/* Add to Bag Button */}
-                <button
-                  onClick={() => handleBuyCurrent(currentItem)}
-                  className="w-full py-4 rounded-full bg-gradient-to-r from-gold-500 via-amber-400 to-yellow-400 text-black font-sans font-semibold text-xs uppercase tracking-[0.25em] flex items-center justify-center gap-2 shadow-xl hover:brightness-110 transition-all duration-300"
-                >
-                  {addedAnimation ? (
-                    <>
-                      <Check className="w-4 h-4 stroke-[3]" />
-                      <span>Added to Luxury Bag!</span>
-                    </>
-                  ) : (
-                    <>
-                      <ShoppingBag className="w-4 h-4" />
-                      <span>Reserve Scent • ${currentItem.price}</span>
-                    </>
-                  )}
-                </button>
+                {/* Action Buttons */}
+                <div className="flex flex-col gap-2.5">
+                  <button
+                    onClick={() => handleBuyCurrent(currentItem)}
+                    className="w-full py-3.5 rounded-full bg-gradient-to-r from-gold-500 via-amber-400 to-yellow-400 text-black font-sans font-semibold text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2 shadow-xl hover:brightness-110 transition-all duration-300"
+                  >
+                    {addedAnimation ? (
+                      <>
+                        <Check className="w-4 h-4 stroke-[3]" />
+                        <span>Added to Luxury Bag!</span>
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingBag className="w-4 h-4" />
+                        <span>Add to Bag • ${currentItem.price}</span>
+                      </>
+                    )}
+                  </button>
+
+                  <a
+                    href={createWhatsAppOrderLink({
+                      title: currentItem.title,
+                      subtitle: currentItem.category,
+                      size: "Standard Flacon",
+                      price: currentItem.price,
+                      image: currentItem.src
+                    })}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-3.5 rounded-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-sans font-semibold text-xs uppercase tracking-[0.18em] flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/40 transition-all duration-300"
+                  >
+                    <MessageCircle className="w-4 h-4 fill-current" />
+                    <span>Order on WhatsApp (09025728209)</span>
+                  </a>
+                </div>
               </div>
             </motion.div>
           </motion.div>

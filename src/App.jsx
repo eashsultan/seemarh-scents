@@ -11,6 +11,7 @@ import CollectionGrid from './components/CollectionGrid';
 import GallerySection from './components/GallerySection';
 import BrandStory from './components/BrandStory';
 import CartDrawer from './components/CartDrawer';
+import FloatingWhatsAppCTA from './components/FloatingWhatsAppCTA';
 import Footer from './components/Footer';
 
 export default function App() {
@@ -127,6 +128,9 @@ export default function App() {
         {/* Section 8: Luxury Footer */}
         <Footer />
       </main>
+
+      {/* Floating Direct WhatsApp CTA Button */}
+      <FloatingWhatsAppCTA />
 
       {/* Cart Drawer */}
       <CartDrawer

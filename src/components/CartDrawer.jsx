@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ShoppingBag, Trash2, Plus, Minus, Gift, Sparkles, CheckCircle2, ArrowRight } from 'lucide-react';
+import { X, ShoppingBag, Trash2, Plus, Minus, Gift, Sparkles, CheckCircle2, ArrowRight, MessageCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { createWhatsAppCartLink } from '../utils/whatsapp';
 
 export default function CartDrawer({ isOpen, onClose, cart, onUpdateQuantity, onRemoveItem, onClearCart }) {
   const [promoCode, setPromoCode] = useState('');
@@ -244,11 +245,23 @@ export default function CartDrawer({ isOpen, onClose, cart, onUpdateQuantity, on
                   </div>
                 </div>
 
+                {/* WhatsApp Direct Order Button */}
+                <a
+                  href={createWhatsAppCartLink(cart, total)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3.5 rounded-full bg-gradient-to-r from-emerald-600 via-green-600 to-emerald-700 hover:from-emerald-500 hover:to-green-500 text-white font-sans font-semibold text-xs uppercase tracking-[0.18em] flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/40 hover:scale-[1.01] transition-all duration-300"
+                >
+                  <MessageCircle className="w-4 h-4 fill-current" />
+                  <span>Order Bag via WhatsApp</span>
+                </a>
+
+                {/* Instant Checkout Simulation */}
                 <button
                   onClick={handleCheckout}
-                  className="w-full py-4 rounded-full bg-gradient-to-r from-gold-500 via-amber-400 to-yellow-500 text-black font-sans font-semibold text-xs uppercase tracking-[0.25em] flex items-center justify-center gap-2 shadow-lg hover:shadow-gold-500/30 hover:scale-[1.02] transition-all duration-300"
+                  className="w-full py-3.5 rounded-full bg-gradient-to-r from-gold-500 via-amber-400 to-yellow-500 text-black font-sans font-semibold text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2 shadow-lg hover:shadow-gold-500/30 hover:scale-[1.01] transition-all duration-300"
                 >
-                  <span>Complete Royal Checkout</span>
+                  <span>Pay Online Directly</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>

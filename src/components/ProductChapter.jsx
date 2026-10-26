@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ShoppingBag, Sparkles, Gift, Check, Truck, ShieldCheck } from 'lucide-react';
+import { ShoppingBag, Sparkles, Gift, Check, Truck, MessageCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { createWhatsAppOrderLink } from '../utils/whatsapp';
 
 const SIZES = [
   { id: '30ml', label: '30ml', name: 'Travel Flacon', price: 95, subtitle: 'Pocket Luxury' },
@@ -183,23 +184,42 @@ export default function ProductChapter({ onAddToCart }) {
             />
           </div>
 
-          {/* CTA Add to Bag */}
-          <button
-            onClick={handleAdd}
-            className="w-full py-4 rounded-full bg-gradient-to-r from-gold-500 via-amber-400 to-yellow-400 hover:brightness-110 text-black font-sans font-semibold text-xs uppercase tracking-[0.25em] flex items-center justify-center gap-2 shadow-xl hover:shadow-gold-500/30 transition-all duration-300 group"
-          >
-            {addedAnimation ? (
-              <>
-                <Check className="w-4 h-4 stroke-[3]" />
-                <span>Reserved for Your Collection!</span>
-              </>
-            ) : (
-              <>
-                <ShoppingBag className="w-4 h-4 transition-transform group-hover:scale-110" />
-                <span>Reserve Flacon • ${selectedSize.price}</span>
-              </>
-            )}
-          </button>
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              onClick={handleAdd}
+              className="flex-1 py-4 rounded-full bg-gradient-to-r from-gold-500 via-amber-400 to-yellow-400 hover:brightness-110 text-black font-sans font-semibold text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2 shadow-xl hover:shadow-gold-500/30 transition-all duration-300 group"
+            >
+              {addedAnimation ? (
+                <>
+                  <Check className="w-4 h-4 stroke-[3]" />
+                  <span>Reserved in Bag!</span>
+                </>
+              ) : (
+                <>
+                  <ShoppingBag className="w-4 h-4 transition-transform group-hover:scale-110" />
+                  <span>Add to Bag • ${selectedSize.price}</span>
+                </>
+              )}
+            </button>
+
+            <a
+              href={createWhatsAppOrderLink({
+                title: "L'Or Nocturne",
+                subtitle: "Pure Extrait de Parfum",
+                size: selectedSize.label,
+                price: selectedSize.price,
+                engraving: engraving.trim() || null,
+                image: "/products/IMG-20261022-WA0149.jpg"
+              })}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="py-4 px-6 rounded-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-sans font-semibold text-xs uppercase tracking-[0.18em] flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/40 transition-all duration-300"
+            >
+              <MessageCircle className="w-4 h-4 fill-current" />
+              <span>Order on WhatsApp</span>
+            </a>
+          </div>
         </motion.div>
       </div>
     </div>
