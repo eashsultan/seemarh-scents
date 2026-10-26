@@ -4,7 +4,7 @@ import { Award, ShieldCheck, Sparkles, HeartHandshake } from 'lucide-react';
 
 export default function BrandStory() {
   return (
-    <section id="story" className="relative py-28 px-6 bg-[#07080a] border-t border-gold-500/15">
+    <section id="story" className="relative py-28 px-6 bg-transparent">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left Text */}

@@ -45,7 +45,7 @@ export default function OlfactoryPyramid() {
   const [activeTier, setActiveTier] = useState(0);
 
   return (
-    <section className="relative py-28 px-6 bg-[#07080a]/90 border-t border-gold-500/15">
+    <section id="olfactive" className="relative py-28 px-6 bg-transparent">
       <div className="max-w-6xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-[11px] font-sans uppercase tracking-[0.3em] text-gold-400 block mb-2">

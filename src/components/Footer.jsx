@@ -14,7 +14,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-[#050608] border-t border-gold-500/20 text-neutral-400 font-sans pt-20 pb-12 px-6">
+    <footer className="relative bg-black/40 backdrop-blur-md border-t border-gold-500/20 text-neutral-400 font-sans pt-20 pb-12 px-6">
       <div className="max-w-7xl mx-auto">
         {/* Newsletter Section */}
         <div className="glass-panel-gold p-8 sm:p-12 rounded-3xl border border-gold-500/30 mb-20 text-center max-w-4xl mx-auto">

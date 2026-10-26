@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useScroll, useTransform, motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { useScroll, motion } from 'framer-motion';
 import BackgroundFrameCanvas from './components/BackgroundFrameCanvas';
 import Navbar from './components/Navbar';
 import HeroChapter from './components/HeroChapter';
@@ -13,26 +13,16 @@ import CartDrawer from './components/CartDrawer';
 import Footer from './components/Footer';
 
 export default function App() {
-  const containerRef = useRef(null);
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [activeChapterIndex, setActiveChapterIndex] = useState(0);
-
-  // Framer motion scroll progress through the interactive scrub container
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
   const [currentProgress, setCurrentProgress] = useState(0);
+
+  // Framer Motion global scroll listener across the ENTIRE webpage
+  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
     return scrollYProgress.on('change', (latest) => {
       setCurrentProgress(latest);
-      if (latest < 0.25) setActiveChapterIndex(0);
-      else if (latest < 0.5) setActiveChapterIndex(1);
-      else if (latest < 0.75) setActiveChapterIndex(2);
-      else setActiveChapterIndex(3);
     });
   }, [scrollYProgress]);
 
@@ -71,11 +61,15 @@ export default function App() {
   const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div className="min-h-screen bg-[#08090b] text-neutral-100 font-sans selection:bg-gold-500 selection:text-black">
-      {/* Fixed Background Canvas: scrubs frames based on scroll */}
+    <div className="min-h-screen bg-transparent text-neutral-100 font-sans selection:bg-gold-500 selection:text-black relative">
+      {/* 
+        FIXED FULL-PAGE BACKGROUND CANVAS:
+        Remains permanently fixed across the ENTIRE website.
+        As the user scrolls down ANYWHERE on the site, 
+        the background continuously plays/scrubs through the 240 video frames!
+      */}
       <BackgroundFrameCanvas
         scrollProgress={currentProgress}
-        activeSection={activeChapterIndex}
       />
 
       {/* Floating Header */}
@@ -85,122 +79,48 @@ export default function App() {
       />
 
       {/* 
-        Scroll scrubbing container:
-        400vh tall so user scrolls through 4 distinct visual chapters 
-        synchronously controlling the 240 frames of the perfume video.
+        ALL SECTIONS ARE COMPLETELY TRANSLUCENT / GLASS OVER THE FIXED MOTION CANVAS.
+        Every scroll movement on the page animates the background video!
       */}
-      <div id="experience" ref={containerRef} className="relative h-[420vh]">
-        <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden pointer-events-none">
-          <div className="w-full h-full pointer-events-auto flex items-center justify-center">
-            {/* Chapter 1: The Genesis & Brand (0% - 25%) */}
-            {activeChapterIndex === 0 && (
-              <motion.div
-                key="chapter-0"
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.04 }}
-                transition={{ duration: 0.6 }}
-                className="w-full"
-              >
-                <HeroChapter />
-              </motion.div>
-            )}
+      <main className="relative z-10">
+        {/* Section 1: Hero & Genesis of Scent */}
+        <section id="experience" className="relative min-h-screen flex items-center justify-center">
+          <HeroChapter />
+        </section>
 
-            {/* Chapter 2: The Atomizer & Micro-Mist (25% - 50%) */}
-            {activeChapterIndex === 1 && (
-              <motion.div
-                key="chapter-1"
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.04 }}
-                transition={{ duration: 0.6 }}
-                className="w-full"
-              >
-                <AtomizerChapter />
-              </motion.div>
-            )}
+        {/* Section 2: The Atomizer & Precision Micro-Mist */}
+        <section id="atomizer" className="relative min-h-screen flex items-center justify-center">
+          <AtomizerChapter />
+        </section>
 
-            {/* Chapter 3: Sensory Awakening & Olfactory Bloom (50% - 75%) */}
-            {activeChapterIndex === 2 && (
-              <motion.div
-                key="chapter-2"
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.04 }}
-                transition={{ duration: 0.6 }}
-                className="w-full"
-              >
-                <SensoryChapter />
-              </motion.div>
-            )}
+        {/* Section 3: Olfactory Accord Pyramid */}
+        <section id="olfactive" className="relative">
+          <OlfactoryPyramid />
+        </section>
 
-            {/* Chapter 4: The Signature Flacon & Acquisition (75% - 100%) */}
-            {activeChapterIndex === 3 && (
-              <motion.div
-                key="chapter-3"
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.04 }}
-                transition={{ duration: 0.6 }}
-                className="w-full"
-              >
-                <ProductChapter onAddToCart={handleAddToCart} />
-              </motion.div>
-            )}
-          </div>
-        </div>
+        {/* Section 4: Sensory Awakening & Intimacy */}
+        <section id="sensory" className="relative min-h-screen flex items-center justify-center">
+          <SensoryChapter />
+        </section>
 
-        {/* Scroll Chapter Progress Indicators on Left */}
-        <div className="hidden lg:flex fixed left-8 top-1/2 -translate-y-1/2 z-30 flex-col gap-6 pointer-events-auto">
-          {[
-            { label: '01 Genesis', index: 0 },
-            { label: '02 Atomizer', index: 1 },
-            { label: '03 Awakening', index: 2 },
-            { label: '04 Flacon', index: 3 },
-          ].map((ch) => (
-            <div
-              key={ch.index}
-              className="flex items-center gap-3 group cursor-pointer"
-              onClick={() => {
-                const targetY = (ch.index / 3.2) * (containerRef.current?.offsetHeight || 1);
-                window.scrollTo({ top: targetY, behavior: 'smooth' });
-              }}
-            >
-              <div
-                className={`h-px transition-all duration-300 ${
-                  activeChapterIndex === ch.index
-                    ? 'w-8 bg-gold-400'
-                    : 'w-3 bg-neutral-600 group-hover:w-5 group-hover:bg-gold-500/50'
-                }`}
-              />
-              <span
-                className={`text-[10px] uppercase font-mono tracking-widest transition-colors ${
-                  activeChapterIndex === ch.index
-                    ? 'text-gold-300 font-bold'
-                    : 'text-neutral-500 group-hover:text-neutral-300'
-                }`}
-              >
-                {ch.label}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
+        {/* Section 5: The Signature Flacon Customizer & Purchase */}
+        <section id="showcase" className="relative min-h-screen flex items-center justify-center">
+          <ProductChapter onAddToCart={handleAddToCart} />
+        </section>
 
-      {/* Additional Deep-Dive Brand Sections */}
-      <div className="relative z-20 bg-[#08090b]/90 backdrop-blur-xl">
-        {/* Interactive Olfactory Pyramid */}
-        <OlfactoryPyramid />
+        {/* Section 6: Grand Fragrance Collection */}
+        <section id="collection" className="relative">
+          <CollectionGrid onAddToCart={handleAddToCart} />
+        </section>
 
-        {/* Grand Collection 4-Bottle Showcase */}
-        <CollectionGrid onAddToCart={handleAddToCart} />
+        {/* Section 7: Maison Seemarh Brand Story & Heritage */}
+        <section id="story" className="relative">
+          <BrandStory />
+        </section>
 
-        {/* Brand Heritage & Craftsmanship */}
-        <BrandStory />
-
-        {/* Luxury Footer */}
+        {/* Section 8: Luxury Footer */}
         <Footer />
-      </div>
+      </main>
 
       {/* Cart Drawer */}
       <CartDrawer

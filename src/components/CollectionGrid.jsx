@@ -73,7 +73,7 @@ export default function CollectionGrid({ onAddToCart }) {
   };
 
   return (
-    <section id="collection" className="relative py-28 px-6 bg-[#07080a]/95 border-t border-gold-500/15">
+    <section id="collection" className="relative py-28 px-6 bg-transparent">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
           <div>

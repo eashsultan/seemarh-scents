@@ -223,13 +223,13 @@ export default function BackgroundFrameCanvas({ scrollProgress, activeSection, o
           className="w-full h-full object-cover block"
         />
 
-        {/* Cinematic Film Vignette & Tone Shading */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#08090b] via-transparent to-[#08090b]/80 pointer-events-none opacity-90" />
-        <div className="absolute inset-0 bg-radial-gradient pointer-events-none opacity-40 mix-blend-multiply" 
-             style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, transparent 40%, rgba(0,0,0,0.85) 100%)' }} />
+        {/* Crisp Semi-Transparent Luxury Dark Film (ensures the motion video is vivid, bright, and clearly visible everywhere) */}
+        <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+        <div className="absolute inset-0 pointer-events-none opacity-40" 
+             style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, transparent 40%, rgba(0,0,0,0.65) 100%)' }} />
         
-        {/* Subtle Luxury Gold Shimmer Overlay */}
-        <div className="absolute inset-0 pointer-events-none opacity-20 mix-blend-overlay bg-gradient-to-br from-amber-500/10 via-transparent to-yellow-600/10" />
+        {/* Subtle Luxury Golden Hue */}
+        <div className="absolute inset-0 pointer-events-none opacity-15 mix-blend-color-dodge bg-gradient-to-tr from-amber-600/20 via-transparent to-yellow-500/20" />
       </div>
 
       {/* Floating Interactive Frame & Motion Controls (Bottom Bar) */}
