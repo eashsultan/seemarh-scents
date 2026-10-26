@@ -35,7 +35,7 @@ export default function ProductChapter({ onAddToCart }) {
       price: selectedSize.price,
       engraving: engraving.trim() || null,
       giftWrap: includeGiftWrap,
-      image: "/frames/ezgif-frame-200.jpg"
+      image: "/products/IMG-20261022-WA0149.jpg"
     });
   };
 

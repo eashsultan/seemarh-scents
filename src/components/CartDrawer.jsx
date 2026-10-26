@@ -131,7 +131,7 @@ export default function CartDrawer({ isOpen, onClose, cart, onUpdateQuantity, on
                         className="p-4 rounded-2xl glass-panel border border-gold-500/15 flex gap-4 items-center"
                       >
                         <img
-                          src={item.image || "/frames/ezgif-frame-200.jpg"}
+                          src={item.image || "/products/IMG-20261022-WA0149.jpg"}
                           alt={item.title}
                           className="w-16 h-16 rounded-xl object-cover border border-gold-500/20 bg-neutral-900"
                         />

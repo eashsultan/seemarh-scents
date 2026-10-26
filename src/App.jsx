@@ -8,6 +8,7 @@ import SensoryChapter from './components/SensoryChapter';
 import ProductChapter from './components/ProductChapter';
 import OlfactoryPyramid from './components/OlfactoryPyramid';
 import CollectionGrid from './components/CollectionGrid';
+import GallerySection from './components/GallerySection';
 import BrandStory from './components/BrandStory';
 import CartDrawer from './components/CartDrawer';
 import Footer from './components/Footer';
@@ -108,12 +109,17 @@ export default function App() {
           <ProductChapter onAddToCart={handleAddToCart} />
         </section>
 
-        {/* Section 6: Grand Fragrance Collection */}
+        {/* Section 6: Grand Fragrance Collection (15 Real Scents) */}
         <section id="collection" className="relative">
           <CollectionGrid onAddToCart={handleAddToCart} />
         </section>
 
-        {/* Section 7: Maison Seemarh Brand Story & Heritage */}
+        {/* Section 7: Scent Gallery & Lookbook Lightbox */}
+        <section id="gallery" className="relative">
+          <GallerySection onAddToCart={handleAddToCart} />
+        </section>
+
+        {/* Section 8: Maison Seemarh Brand Story & Heritage */}
         <section id="story" className="relative">
           <BrandStory />
         </section>

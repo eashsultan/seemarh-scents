@@ -66,8 +66,8 @@ export default function BrandStory() {
           >
             <div className="relative rounded-3xl overflow-hidden glass-panel-gold p-4 border border-gold-500/30">
               <img
-                src="/frames/ezgif-frame-220.jpg"
-                alt="Seemarh Scents Flacon and Boutique Packaging"
+                src="/products/IMG-20261022-WA0171.jpg"
+                alt="Maison Seemarh Boutique and Royal Black Fragrance"
                 className="w-full h-[440px] object-cover rounded-2xl"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent rounded-2xl" />

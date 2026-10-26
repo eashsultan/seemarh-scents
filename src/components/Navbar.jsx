@@ -24,11 +24,13 @@ export default function Navbar({ cartCount, onOpenCart }) {
               : 'glass-panel border border-white/10 bg-black/30 backdrop-blur-md'
           }`}
         >
-          {/* Brand Logo */}
+          {/* Brand Logo with Official Emblem */}
           <a href="#" className="flex items-center gap-3 group">
-            <div className="w-7 h-7 rounded-full border border-gold-400/50 flex items-center justify-center transition-transform duration-500 group-hover:rotate-45">
-              <span className="text-gold-300 font-serif text-xs">S</span>
-            </div>
+            <img
+              src="/products/IMG-20261022-WA0200.jpg"
+              alt="Seemarh Scents Official Emblem"
+              className="w-9 h-9 rounded-full object-cover border border-gold-400/50 shadow-md transition-transform duration-500 group-hover:scale-105"
+            />
             <div className="flex flex-col">
               <span className="font-serif text-base tracking-[0.22em] text-white font-medium group-hover:text-gold-300 transition-colors uppercase">
                 Seemarh
@@ -40,12 +42,13 @@ export default function Navbar({ cartCount, onOpenCart }) {
           </a>
 
           {/* Desktop Nav Links */}
-          <nav className="hidden md:flex items-center gap-7 text-[11px] tracking-[0.2em] uppercase font-sans text-neutral-300">
+          <nav className="hidden md:flex items-center gap-6 text-[11px] tracking-[0.2em] uppercase font-sans text-neutral-300">
             <a href="#experience" className="hover:text-gold-300 transition-colors">Cinema</a>
             <a href="#atomizer" className="hover:text-gold-300 transition-colors">Micro-Mist</a>
             <a href="#olfactive" className="hover:text-gold-300 transition-colors">Pyramid</a>
-            <a href="#showcase" className="hover:text-gold-300 transition-colors">The Flacon</a>
+            <a href="#showcase" className="hover:text-gold-300 transition-colors">Flacon</a>
             <a href="#collection" className="hover:text-gold-300 transition-colors">Collection</a>
+            <a href="#gallery" className="hover:text-gold-300 transition-colors text-gold-400 font-medium">Gallery</a>
             <a href="#story" className="hover:text-gold-300 transition-colors">Maison</a>
           </nav>
 

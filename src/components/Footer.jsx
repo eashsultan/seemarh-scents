@@ -89,11 +89,11 @@ export default function Footer() {
           <div>
             <h4 className="font-serif text-white uppercase tracking-widest text-sm mb-4">The Parfumerie</h4>
             <ul className="space-y-2.5 text-neutral-400">
-              <li><a href="#showcase" className="hover:text-gold-300 transition-colors">L'Or Nocturne (Extrait)</a></li>
-              <li><a href="#collection" className="hover:text-gold-300 transition-colors">Rose Impériale</a></li>
-              <li><a href="#collection" className="hover:text-gold-300 transition-colors">Blanc Séléné</a></li>
-              <li><a href="#collection" className="hover:text-gold-300 transition-colors">Soleil d'Or</a></li>
-              <li><a href="#showcase" className="hover:text-gold-300 transition-colors">Discovery Set & Samples</a></li>
+              <li><a href="#collection" className="hover:text-gold-300 transition-colors">9pm Night Out (Extrait)</a></li>
+              <li><a href="#collection" className="hover:text-gold-300 transition-colors">Mosuf Luxe Sapphire</a></li>
+              <li><a href="#collection" className="hover:text-gold-300 transition-colors">Bakarat Rouge 540</a></li>
+              <li><a href="#gallery" className="hover:text-gold-300 transition-colors text-gold-400">Artisanal Gallery</a></li>
+              <li><a href="#collection" className="hover:text-gold-300 transition-colors">Royal Black Attar (Almas)</a></li>
             </ul>
           </div>
 
